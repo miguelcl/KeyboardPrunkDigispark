@@ -1,0 +1,86 @@
+// Digispark keyboard prank
+ 
+#include "DigiKeyboard.h"
+ 
+int led = 0;
+long randNumber;
+#define KEY_UP_ARROW 0x52
+#define KEY_DOWN_ARROW 0x51
+#define KEY_LEFT_ARROW 0x50
+#define KEY_RIGHT_ARROW 0x4F
+#define KEY_DELETE 76
+#define KEYPAD_PLUS 0x57
+#define KEYPAD_MINUS 0x56
+ 
+void setup() {
+    randomSeed(analogRead(0));
+    pinMode(led, OUTPUT);
+    DigiKeyboard.update();
+    DigiKeyboard.sendKeyStroke(0);
+    DigiKeyboard.delay(4600000);
+}
+ 
+void loop() {
+    DigiKeyboard.sendKeyStroke(0);
+    randNumber = (int) random(6);
+    switch (randNumber) {
+      case 0: // Play with capslock 
+        {
+          DigiKeyboard.sendKeyStroke(57);
+          digitalWrite(led, 1);
+          DigiKeyboard.delay((int) random(5000)+10000);
+          DigiKeyboard.sendKeyStroke(57);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 1: // Minimize all windows
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(KEY_M, MOD_GUI_LEFT);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 2: // Lock screen
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(KEY_L, MOD_GUI_LEFT);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 3: // Minimize current window
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(KEY_DOWN_ARROW, MOD_GUI_LEFT);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 4: // Flip screen
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(KEY_DOWN_ARROW, MOD_CONTROL_LEFT + MOD_ALT_LEFT);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 5: // ZoomOut
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_MINUS);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_MINUS);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_MINUS);
+          digitalWrite(led, 0);
+        }
+        break;
+      case 6: // ZoomIn
+        {
+          digitalWrite(led, 1);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_PLUS);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_PLUS);
+          DigiKeyboard.sendKeyStroke(MOD_CONTROL_LEFT, KEYPAD_PLUS);
+          digitalWrite(led, 0);
+        }
+        break;
+      default:
+        break;
+    }
+    DigiKeyboard.delay((int) random(60000)+90000);
+}
